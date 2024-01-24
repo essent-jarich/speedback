@@ -11,7 +11,7 @@ def count_down(ts):
             st.header(f"{time_now}")
             time.sleep(1)
             ts -= 1
-    st.write("Copyright: Twan Bakker")
+    st.write("Copyright: Twan Bakker - Ziltoid The Omniscient")
     st.balloons()
     
     p = vlc.MediaPlayer("media/jingle.mp3")
