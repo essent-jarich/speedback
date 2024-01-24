@@ -1,4 +1,5 @@
 import streamlit as st
+import pygame
 import time
 
 import vlc
@@ -14,10 +15,12 @@ def count_down(ts):
     st.write("Copyright: Twan Bakker - Ziltoid The Omniscient")
     st.balloons()
     
-    p = vlc.MediaPlayer("./media/jingle.mp3")
-    p.play()
-    time.sleep(10)  # wait for 5 seconds to finish the playing of the audio
-    p.pause()
+    pygame.mixer.init()
+    pygame.mixer.music.load('./media/jingle.mp3')
+    pygame.mixer.music.play()
+    print("Audio will play for 4 seconds")
+    time.sleep(4)
+    pygame.mixer.music.stop()
     
 
 st.title("Timer for speedback session")
