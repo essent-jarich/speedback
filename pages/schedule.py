@@ -27,38 +27,14 @@ st.write('You selected:', selected_team)
 st.write('Your team has', len(teams[selected_team]), 'members')
 
 st.write("## Table planning")
+teams = teams[selected_team]
+n = int(len(teams) / 2)
 
-def generate_sessions(people: list, excl=[]):
-    # all the pairings you need are all possible pairings, except the exclusions
-    needed_pairings = [set(pair) for pair in combinations(people, 2)]
-    
-    for pair in excl:
-        needed_pairings.remove(pair)
+sessions = []
+for i in range(len(teams) - 1):
+    t = teams[:1] + teams[-i:] + teams[1:-i] if i else teams
+    sessions.append(list(zip(t[:n], reversed(t[n:]))))
 
-    # while there pairing that haven't happened yet
-    while needed_pairings:
-        # each session starts empty
-        session = []
-        # keep track of all people still available for this session
-        available = set(people)
-        # create an iterator, so we can loop over the needed pairings
-        iter_needed_pairings = iter(needed_pairings)
-        # as long as there are more than 2 people still waiting and there's a pair left in the needed pairings
-        while (len(available) > 1) and (pair := next(iter_needed_pairings, False)):
-            # are both people in the pair in the group of available people?
-            if available.intersection(pair) == pair:
-                # then they can meet in this session
-                session.append(pair)
-                # and they're no longer available
-                available -= pair
-        # once we have a session, remove the pairs in it from the pairings still needed
-        for pair in session:
-            needed_pairings.remove(pair)
-        # yield the session
-        yield session
-
-
-sessions = list(generate_sessions(people=teams[selected_team]))
 st.session_state[sessions] = sessions
 
 for i in range(len(sessions)):
@@ -118,18 +94,21 @@ for i in range(1, len(sessions)):
     if i % sessions_before_break == 0:
         session_details = {}
         session_details['session_name'] = 'Break'
+        session_details['duration'] = break_duration
         session_details['session_start'] = session_times[-1]['session_end']
         session_details['session_end'] = addSecs(session_details['session_start'], break_duration*60)
         session_times.append(session_details)
 
         session_details = {}
         session_details['session_name'] = i
+        session_details['duration'] = session_duration
         session_details['session_start'] = session_times[-1]['session_end']
         session_details['session_end'] = addSecs(session_details['session_start'], session_duration*60)
         session_times.append(session_details)
     else:
         session_details = {}
         session_details['session_name'] = i
+        session_details['duration'] = session_duration
         session_details['session_start'] = session_times[-1]['session_end']
         session_details['session_end'] = addSecs(session_details['session_start'], session_duration*60)
         session_times.append(session_details)
@@ -157,4 +136,5 @@ for i in range(len(session_times)):
     else:
         st.write("## " + session_name)
         st.write("Start:", session_times[i]['session_start'], "-", "End:", session_times[i]['session_end'])
-      
+
+st.session_state["session_planning"] = session_times
