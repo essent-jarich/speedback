@@ -1,6 +1,8 @@
 import streamlit as st
 import time
 
+import vlc
+
 def count_down(ts):
     with st.empty():
         while ts:
@@ -9,8 +11,14 @@ def count_down(ts):
             st.header(f"{time_now}")
             time.sleep(1)
             ts -= 1
-    st.write("Time Up!")
+    st.write("Copyright: Twan Bakker")
     st.balloons()
+    
+    p = vlc.MediaPlayer("media/jingle.mp3")
+    p.play()
+    time.sleep(10)  # wait for 5 seconds to finish the playing of the audio
+    p.pause()
+    
 
 st.title("Timer for speedback session")
 time_minutes = st.number_input('Enter the time in minutes ', min_value=1, value=5)
