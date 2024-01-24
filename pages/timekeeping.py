@@ -14,7 +14,7 @@ def count_down(ts):
     st.write("Copyright: Twan Bakker - Ziltoid The Omniscient")
     st.balloons()
     
-    p = vlc.MediaPlayer("media/jingle.mp3")
+    p = vlc.MediaPlayer("./media/jingle.mp3")
     p.play()
     time.sleep(10)  # wait for 5 seconds to finish the playing of the audio
     p.pause()
