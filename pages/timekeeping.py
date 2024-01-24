@@ -2,8 +2,6 @@ import streamlit as st
 import pygame
 import time
 
-import vlc
-
 def count_down(ts):
     with st.empty():
         while ts:
