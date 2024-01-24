@@ -1,5 +1,4 @@
 streamlit
 pandas
 datetime
-python-vlc
-vlc
+python-vlc==3.0.20123
